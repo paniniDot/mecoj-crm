@@ -1,0 +1,30 @@
+<div class="container">
+    <h2>Lista Dipendenti</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Cognome</th>
+          <th>Email</th>
+          <th>Societa'</th>
+          <th>Website</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+      @for (client of clients; track client.id) {
+        <tr>
+          <td>{{ client.id }}</td>
+          <td>{{ client.firstName }}</td>
+          <td>{{ client.lastName }}</td>
+          <td>{{ client.email }}</td>
+          <td>{{ client.company }}</td>
+          <td>{{ client.website }}</td>
+          <td>{{ client.notes }}</td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+  

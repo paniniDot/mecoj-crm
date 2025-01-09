@@ -1,0 +1,39 @@
+src/
+├── app/
+│   ├── core/               # Servizi, modelli e logica condivisa
+│   │   ├── models/         # Interfacce e modelli dati
+│   │   │   ├── user.ts
+│   │   │   ├── client.ts
+│   │   │   ├── employee.ts
+│   │   │
+│   │   ├── services/       # Servizi per API e gestione dati
+│   │   │   ├── user.service.ts
+│   │   │   ├── client.service.ts
+│   │   │   ├── employee.service.ts
+│   │
+│   ├── features/           # Componenti principali per le funzionalità
+│   │   ├── user/           # Componenti relativi agli utenti generici
+│   │   │   ├── user-list/  # Lista generica di utenti
+│   │   │   │   ├── user-list.component.ts
+│   │   │   │   ├── user-list.component.html
+│   │   │   │   ├── user-list.component.scss
+│   │   │
+│   │   ├── client/         # Componenti relativi ai clienti
+│   │   │   ├── client-list/
+│   │   │   │   ├── client-list.component.ts
+│   │   │   │   ├── client-list.component.html
+│   │   │   │   ├── client-list.component.scss
+│   │   │
+│   │   ├── employee/       # Componenti relativi ai dipendenti
+│   │   │   ├── employee-list/
+│   │   │   │   ├── employee-list.component.ts
+│   │   │   │   ├── employee-list.component.html
+│   │   │   │   ├── employee-list.component.scss
+│   │
+│   ├── shared/             # Moduli e componenti condivisi
+│   │   ├── components/     # Componenti riutilizzabili (es. tabelle, pulsanti)
+│   │   ├── pipes/          # Pipe personalizzate
+│   │   ├── directives/     # Direttive personalizzate
+│
+├── assets/                 # Asset statici (immagini, CSS globali, ecc.)
+├── environments/           # Configurazioni per ambienti (dev, prod)
