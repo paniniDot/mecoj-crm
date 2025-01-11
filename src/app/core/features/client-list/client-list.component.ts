@@ -4,11 +4,10 @@ import { Client } from '../../models/client';
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
-  styleUrls: ['./client-list.component.css']
+  styleUrl: './client-list.component.css'
 })
 
 export class ClientListComponent {
-    title = 'Client List';
     clients: Client[] = [
     {
         id: 1,

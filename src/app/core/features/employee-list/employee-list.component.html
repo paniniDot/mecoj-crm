@@ -1,0 +1,34 @@
+<div class="container">
+    <h2>Lista Dipendenti</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Cognome</th>
+          <th>Email</th>
+          <th>Telefono</th>
+          <th>Dipartimento</th>
+          <th>Ruolo</th>
+          <th>Stipendio</th>
+          <th>Data assunzione</th>
+        </tr>
+      </thead>
+      <tbody>
+      @for (employee of employees; track employee.id) {
+        <tr>
+            <td>{{ employee.id }}</td>
+            <td>{{ employee.firstName }}</td>
+            <td>{{ employee.lastName }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.phone }}</td>
+            <td>{{ employee.department }}</td>
+            <td>{{ employee.role }}</td>
+            <td>{{ employee.salary }}</td>
+            <td>{{ employee.hireDate }}</td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+  
