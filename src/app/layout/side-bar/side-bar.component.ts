@@ -12,7 +12,7 @@ export class SidebarComponent {
     { label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
     { label: 'Clienti', path: '/app-client-list', icon: 'people' },
     { label: 'Dipendenti', path: '/app-employee-list', icon: 'group' },
-    { label: 'Calendario', path: '/calendar', icon: 'calendar_today' },
+    { label: 'Calendario', path: '/app-calendar', icon: 'calendar_today' },
     { label: 'Bilanci', path: '/finances', icon: 'account_balance' },
   ];
 }
