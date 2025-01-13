@@ -1,5 +1,10 @@
 src/
 ├── app/
+│   │
+│   │
+│   ├── layout              # per i layout fissi fra le varie pagine
+│   │
+│   │ 
 │   ├── core/               # Servizi, modelli e logica condivisa
 │   │   ├── models/         # Interfacce e modelli dati
 │   │   │   ├── user.ts

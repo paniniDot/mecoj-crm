@@ -5,8 +5,9 @@ import { ClientListComponent } from './core/features/client-list/client-list.com
 import { EmployeeListComponent } from './core/features/employee-list/employee-list.component';
 
 export const routes: Routes = [
-    { path: '', title: 'Dashboard', component: DashboardComponent }, 
-    { path: 'app-client-list', title: 'Lista Clienti', component: ClientListComponent },
-    { path: 'app-employee-list', title: 'Lista Dipendenti', component: EmployeeListComponent },
-    { path: '**', title: '404 Not Found', component: PageNotFoundComponent },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, 
+  { path: 'dashboard', title: 'Dashboard', component: DashboardComponent },
+  { path: 'app-client-list', title: 'Lista Clienti', component: ClientListComponent },
+  { path: 'app-employee-list', title: 'Lista Dipendenti', component: EmployeeListComponent },
+  { path: '**', title: '404 Not Found', component: PageNotFoundComponent },
 ];
