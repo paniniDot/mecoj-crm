@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions } from '@fullcalendar/core';
+import { EventInput, CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import { Event } from '../../models/event';
+import { CustomEvent, EventMapper } from '../../models/event';
 
 @Component({
   selector: 'app-calendar',
@@ -10,7 +10,25 @@ import { Event } from '../../models/event';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
+
 export class CalendarComponent {
+  myCustomEvents: CustomEvent[] = [
+    {
+      title: 'Incontro Ganna',
+      start: new Date(2025, 0, 14, 15, 0, 0, 0),
+      end: new Date(2025, 0, 14, 18, 0, 0, 0),
+      description: 'bla bla',
+      location: 'Ufficio',
+    },
+    {
+      title: 'Incontro Jimmy',
+      start: new Date(2025, 0, 15, 15, 0, 0, 0),
+      end: new Date(2025, 0, 15, 18, 0, 0, 0),
+      description: 'bla bla',
+      location: 'Bar Jimmy',
+    },
+  ];
+
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin],
@@ -20,9 +38,6 @@ export class CalendarComponent {
       right: 'dayGridMonth,timeGridWeek,timeGridDay',
     },
     weekends: true,
-    //events: Event[] = [
-    //    { title: 'Meeting Ganna', description: 'bla bla bla', date: new Date('January 17, 2025 03:24:00'), location: 'Ufficio' },
-    //],
-  }
+    events: EventMapper.getCalendarEvents(this.myCustomEvents),
+  };
 }
-
