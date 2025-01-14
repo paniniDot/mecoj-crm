@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { EventInput, CalendarOptions } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
+import { CalendarOptions } from '@fullcalendar/core';
 import { CustomEvent, EventMapper } from '../../models/event';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from "@fullcalendar/timegrid";
+import dayGridPlugin from '@fullcalendar/daygrid';
+import listGrid from '@fullcalendar/list';
 
 @Component({
   selector: 'app-calendar',
@@ -31,13 +34,18 @@ export class CalendarComponent {
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin],
+    plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin, listGrid],
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
     },
     weekends: true,
     events: EventMapper.getCalendarEvents(this.myCustomEvents),
-  };
+    dateClick: (arg) => this.handleDateClick(arg),
+};
+  
+  handleDateClick(arg: any) {
+    alert('date click! ' + arg.dateStr)
+  }
 }
