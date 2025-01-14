@@ -1,42 +1,68 @@
+/* Stile base per la sidebar */
 .sidebar {
-    width: 150px;
-    background-color: #f4f4f4;
-    height: 100vh;
-    padding: 1rem;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    position: fixed;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar li {
-    margin: 10px 0;
-  }
-  
-  .sidebar a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar a.active,
-  .sidebar a:hover {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .sidebar .material-icons {
-    margin-right: 10px;
-    font-size: 20px;
-    color: inherit;
-  }
-  
+  width: 60px;
+  background-color: #2c3e50;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: width 0.3s;
+}
+
+.sidebar.expanded {
+  width: 240px;
+}
+
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar li {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #34495e;
+}
+
+.sidebar .material-icons {
+  font-size: 24px;
+  margin-right: 16px;
+}
+
+.sidebar.expanded .label {
+  display: inline;
+}
+
+.label {
+  display: none;
+}
+
+/* Bottone di toggle */
+.toggle-button {
+  position: absolute;
+  bottom: 20px;
+  left: 65%;
+  transform: translateX(-50%);
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.toggle-button .material-icons {
+  font-size: 24px;
+}

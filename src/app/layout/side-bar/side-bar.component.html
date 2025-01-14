@@ -1,12 +1,17 @@
-<nav class="sidebar">
-    <ul>
-      @for (item of menuItems; track item.label) {
-        <li>
-          <a routerLink="{{ item.path }}" routerLinkActive="active">
-            <span class="material-icons">{{ item.icon }}</span>
-            {{ item.label }}
-          </a>
-        </li>
-      }
-    </ul>
-  </nav>
+<nav class="sidebar" [class.expanded]="isExpanded">
+  <ul>
+    @for (item of menuItems; track item.label) {
+      <li>
+        <a routerLink="{{ item.path }}" routerLinkActive="active">
+          <span class="material-icons">{{ item.icon }}</span>
+          @if (isExpanded) {
+            <span class="label">{{ item.label }}</span>
+          }
+        </a>
+      </li>
+    }
+  </ul>
+  <button class="toggle-button" (click)="toggleSidebar()">
+    <span class="material-icons">{{ isExpanded ? 'chevron_left' : 'menu' }}</span>
+  </button>
+</nav>
