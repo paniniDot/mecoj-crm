@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>Aggiungi Evento</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Titolo</mat-label>
+    <input matInput [(ngModel)]="event.title" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Descrizione</mat-label>
+    <textarea matInput [(ngModel)]="event.description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Data e Ora Inizio</mat-label>
+    <input matInput type="datetime-local" [(ngModel)]="event.start" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Data e Ora Fine</mat-label>
+    <input matInput type="datetime-local" [(ngModel)]="event.end" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Luogo</mat-label>
+    <input matInput [(ngModel)]="event.location" />
+  </mat-form-field>
+
+  <mat-label>Urgenza</mat-label>
+  <mat-radio-group [(ngModel)]="event.severity">
+    <mat-radio-button [value]="Severity.HIGH" [style.background-color]="'red'">Urgente</mat-radio-button>
+    <mat-radio-button [value]="Severity.MEDIUM" [style.background-color]="'yellow'">Medio</mat-radio-button>
+    <mat-radio-button [value]="Severity.LOW" [style.background-color]="'green'">Non urgente</mat-radio-button>
+  </mat-radio-group>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Annulla</button>
+  <button mat-button color="primary" (click)="submit()">Salva</button>
+</div>
