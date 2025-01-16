@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import itLocale from '@fullcalendar/core/locales/it';
 import { CalendarOptions } from '@fullcalendar/core';
 import { CustomEvent, EventMapper } from '../../models/event';
 import { AddEventPopupService } from '../../services/add-event.service';
@@ -13,13 +14,15 @@ import { Severity } from '../../models/event';
 
 @Component({
   selector: 'app-calendar',
-  standalone: true,
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
   providers: [AddEventPopupService],
   imports: [FullCalendarModule, MatButtonModule, MatDialogModule],
 })
 export class CalendarComponent {
+  selectedDate: string | null = null;
+  eventsForDate: CustomEvent[] = [];
+
   constructor(private addEventPopupService: AddEventPopupService) {}
 
   myCustomEvents: CustomEvent[] = [
@@ -41,6 +44,21 @@ export class CalendarComponent {
     },
   ];
 
+  calendarOptions: CalendarOptions = {
+    initialView: 'dayGridMonth',
+    plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin, listGrid],
+    locales: [itLocale],
+    locale: 'it',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+    },
+    weekends: true,
+    events: EventMapper.getCalendarEvents(this.myCustomEvents),
+    dateClick: this.handleDateClick.bind(this),
+  };
+
   openAddEventPopup() {
     this.addEventPopupService.openPopup().then((newEvent) => {
       if (newEvent) {
@@ -49,7 +67,7 @@ export class CalendarComponent {
           start: new Date(newEvent.start),
           end: new Date(newEvent.end),
           description: newEvent.description,
-          location: newEvent.location, 
+          location: newEvent.location,
           severity: newEvent.severity,
         };
         this.myCustomEvents = [...this.myCustomEvents, eventToAdd];
@@ -60,20 +78,16 @@ export class CalendarComponent {
     });
   }
 
-  calendarOptions: CalendarOptions = {
-    initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin, listGrid],
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-    },
-    weekends: true,
-    events: EventMapper.getCalendarEvents(this.myCustomEvents),
-    dateClick: (arg) => this.handleDateClick(arg),
-  };
-
   handleDateClick(arg: any) {
-    alert('date click! ' + arg.dateStr);
+    const clickedDate = new Date(arg.dateStr).toISOString().split('T')[0];
+    this.selectedDate = clickedDate;
+    this.eventsForDate = this.myCustomEvents.filter((event) => {
+      const eventDate = event.start.toISOString().split('T')[0];
+      return eventDate === clickedDate;
+    });
+  }
+
+  closeDropdown() {
+    this.selectedDate = null;
   }
 }
