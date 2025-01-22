@@ -10,23 +10,26 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listGrid from '@fullcalendar/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Severity } from '../../models/event';
+import tippy from 'tippy.js';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
+
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css'],
   providers: [AddEventPopupService],
-  imports: [FullCalendarModule, MatButtonModule, MatDialogModule],
+  imports: [FullCalendarModule, MatButtonModule, MatDialogModule, MatTooltipModule],
 })
 export class CalendarComponent {
-  selectedDate: string | null = null;
-  eventsForDate: CustomEvent[] = [];
-
   constructor(private addEventPopupService: AddEventPopupService) {}
 
   myCustomEvents: CustomEvent[] = [
     {
+      id: 1,
       title: 'Incontro Ganna',
       start: new Date(2025, 0, 14, 15, 0, 0, 0),
       end: new Date(2025, 0, 14, 18, 0, 0, 0),
@@ -35,6 +38,7 @@ export class CalendarComponent {
       severity: Severity.HIGH,
     },
     {
+      id: 2,
       title: 'Incontro Jimmy',
       start: new Date(2025, 0, 15, 15, 0, 0, 0),
       end: new Date(2025, 0, 15, 18, 0, 0, 0),
@@ -46,9 +50,10 @@ export class CalendarComponent {
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin, listGrid],
+    plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin, listGrid, bootstrap5Plugin],
     locales: [itLocale],
     locale: 'it',
+    themeSystem: 'bootstrap5',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -56,13 +61,14 @@ export class CalendarComponent {
     },
     weekends: true,
     events: EventMapper.getCalendarEvents(this.myCustomEvents),
-    dateClick: this.handleDateClick.bind(this),
+    eventDidMount: this.addTooltip,
   };
 
   openAddEventPopup() {
     this.addEventPopupService.openPopup().then((newEvent) => {
       if (newEvent) {
         const eventToAdd: CustomEvent = {
+          id: this.myCustomEvents.length + 1,
           title: newEvent.title,
           start: new Date(newEvent.start),
           end: new Date(newEvent.end),
@@ -78,16 +84,38 @@ export class CalendarComponent {
     });
   }
 
-  handleDateClick(arg: any) {
-    const clickedDate = new Date(arg.dateStr).toISOString().split('T')[0];
-    this.selectedDate = clickedDate;
-    this.eventsForDate = this.myCustomEvents.filter((event) => {
-      const eventDate = event.start.toISOString().split('T')[0];
-      return eventDate === clickedDate;
-    });
+  deleteEvent(eventId: number) {
+    this.myCustomEvents = this.myCustomEvents.filter((event) => event.id !== eventId);
+    this.calendarOptions.events = EventMapper.getCalendarEvents(this.myCustomEvents);
   }
 
-  closeDropdown() {
-    this.selectedDate = null;
+  addTooltip(info: any) {
+    tippy(info.el, {
+      content: `
+        <div class="card">
+          <div class="card-header">
+            <strong>${info.event.title}</strong><br>
+          </div>
+          <div class="card-body">
+            <strong>Inizio:</strong> ${info.event.start?.toLocaleString() || 'N/A'}<br>
+            <strong>Fine:</strong> ${info.event.end?.toLocaleString() || 'N/A'}<br>
+            <strong>Descrizione:</strong> ${info.event.extendedProps.description || 'No description'}<br>
+            <strong>Luogo:</strong> ${info.event.extendedProps.location || 'No location specified'}<br>
+            <div class="mt-2">
+              <button id="edit-event-${info.event.extendedProps.id}" class="btn btn-sm btn-primary">Modifica</button>
+              <button id="delete-event-${info.event.extendedProps.id}" class="btn btn-sm btn-danger" (click)="deleteEvent(${info.event.extendedProps.id})">Elimina</button>
+            </div>
+          </div>
+        </div>
+      `,
+      placement: 'bottom',
+      allowHTML: true,
+      interactive: true,
+      appendTo: document.body,
+      theme: 'light-border',
+      arrow: true,
+      inertia: true,
+    });
   }
+  
 }

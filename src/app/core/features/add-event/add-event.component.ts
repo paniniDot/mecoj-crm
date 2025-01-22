@@ -14,7 +14,6 @@ import { Severity } from '../../models/event';
 @Component({
   selector: 'add-event-popup',
   templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.css'],
   imports: [
     FormsModule,
     MatButtonModule,

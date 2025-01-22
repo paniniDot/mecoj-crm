@@ -1,20 +1,6 @@
-<div>
+<div class="h-100">
     <h1>Calendario</h1>
     <button mat-button color="primary" (click)="openAddEventPopup()">Aggiungi Evento</button>
-    <full-calendar [options]="calendarOptions"></full-calendar>
-  
-    @if (selectedDate) {
-      <div class="event-overlay">
-        <h2>Eventi del {{ selectedDate }}</h2>
-        <ul>
-          @for (event of eventsForDate; track event.title) {
-            <li>
-              <strong>{{ event.title }}</strong> - {{ event.description }}
-            </li>
-          }
-        </ul>
-        <button mat-button (click)="closeDropdown()">Chiudi</button>
-      </div>
-    }
-  </div>
+    <full-calendar class="h-75" [options]="calendarOptions"></full-calendar>
+</div>
   

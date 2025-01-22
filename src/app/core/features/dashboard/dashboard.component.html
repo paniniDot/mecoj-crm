@@ -1,9 +1,82 @@
-<h1>{{title}}</h1>
-<nav>
-    <ul>
-      <li><a routerLink="/app-client-list">Clients</a></li>
-      <li><a routerLink="/app-employee-list">Employees</a></li>
-    </ul>
-  </nav>
+<div class="container-fluid h-100">
+  <!-- Sezione Dashboard -->
+  <div class="row my-4">
+    <!-- Card 1 -->
+    <div class="col-md-3 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body d-flex align-items-center">
+          <span class="material-icons text-primary me-3" style="font-size: 36px;">group</span>
+          <div>
+            <h5 class="card-title mb-1">Dipendenti</h5>
+            <p class="card-text mb-0">25</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <router-outlet></router-outlet>
+    <!-- Card 2 -->
+    <div class="col-md-3 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body d-flex align-items-center">
+          <span class="material-icons text-success me-3" style="font-size: 36px;">person</span>
+          <div>
+            <h5 class="card-title mb-1">Clienti</h5>
+            <p class="card-text mb-0">120</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-md-3 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body d-flex align-items-center">
+          <span class="material-icons text-warning me-3" style="font-size: 36px;">work</span>
+          <div>
+            <h5 class="card-title mb-1">Progetti</h5>
+            <p class="card-text mb-0">15</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="col-md-3 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body d-flex align-items-center">
+          <span class="material-icons text-danger me-3" style="font-size: 36px;">trending_up</span>
+          <div>
+            <h5 class="card-title mb-1">Performance</h5>
+            <p class="card-text mb-0">85%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sezione Charts -->
+  <div class="row h-75">
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Area Chart</h5>
+          <div class="chart-container">
+            <canvas id="areaChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4 h-100">
+      <div class="card shadow-sm h-100">
+        <div class="card-body h-75">
+          <h5 class="card-title">Pie Chart</h5>
+          <div class="chart-container h-100">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

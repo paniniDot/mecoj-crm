@@ -1,6 +1,7 @@
 import { EventInput } from '@fullcalendar/core';
 
 export interface CustomEvent {
+  id: number;
   title: string;
   start: Date;
   end: Date;
@@ -33,13 +34,13 @@ export class EventMapper {
         default:
           backgroundColor = 'green'; 
       }
-      console.log('eventMapper color', event.severity, backgroundColor);
       
       return {
         title: event.title,
         start: event.start,
         end: event.end,
         extendedProps: {
+          id: event.id,
           description: event.description,
           location: event.location,
         },

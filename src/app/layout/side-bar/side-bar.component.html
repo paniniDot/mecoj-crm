@@ -1,10 +1,13 @@
-<nav class="sidebar">
-  <ul>
+<nav class="sidebar bg-light vh-100">
+  <ul class="list-unstyled">
     @for (item of menuItems; track item.label) {
-      <li>
-        <a routerLink="{{ item.path }}" routerLinkActive="active">
-          <span class="material-icons">{{ item.icon }}</span>
-          {{ item.label }}
+      <li class="my-2">
+        <a 
+          routerLink="{{ item.path }}" 
+          routerLinkActive="active" 
+          class="d-flex align-items-center text-decoration-none px-3 py-2 rounded">
+          <span class="material-icons me-2">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
         </a>
       </li>
     }
