@@ -2,5 +2,15 @@
     <h1>Calendario</h1>
     <button mat-button color="primary" (click)="openAddEventPopup()">Aggiungi Evento</button>
     <full-calendar class="h-75" [options]="calendarOptions"></full-calendar>
+
+    @if (selectedEvent) {
+        <div class="overlay" (click)="closeContextMenu()">
+            <event-context-menu
+                [event]="selectedEvent"
+                [position]="contextMenuPosition"
+                (onEdit)="editEvent($event)"
+                (onDelete)="deleteEvent($event)">
+            </event-context-menu>
+        </div>
+    }
 </div>
-  

@@ -1,0 +1,13 @@
+<div class="context-menu" [ngStyle]="{ top: position.y + 'px', left: position.x + 'px' }">
+    <div class="context-header"><strong>{{ event?.title }}</strong></div>
+    <div class="context-body">
+      <p><strong>Inizio:</strong> {{ event?.start | date:'short' }}</p>
+      <p><strong>Fine:</strong> {{ event?.end | date:'short' }}</p>
+      <p><strong>Descrizione:</strong> {{ event?.extendedProps.description || 'N/A' }}</p>
+      <p><strong>Luogo:</strong> {{ event?.extendedProps.location || 'N/A' }}</p>
+    </div>
+    <div class="context-footer">
+      <button (click)="editEvent()" class="btn btn-sm btn-primary">Modifica</button>
+      <button (click)="deleteEvent()" class="btn btn-sm btn-danger">Elimina</button>
+    </div>
+  </div>

@@ -12,40 +12,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Severity } from '../../models/event';
-import tippy from 'tippy.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
-
+import { EventContextMenuComponent } from '../event-context-menu/event-context-menu.component'
 
 @Component({
+  standalone: true,
+  imports: [FullCalendarModule, MatButtonModule, MatDialogModule, MatTooltipModule, EventContextMenuComponent],
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   providers: [AddEventPopupService],
-  imports: [FullCalendarModule, MatButtonModule, MatDialogModule, MatTooltipModule],
 })
-export class CalendarComponent {
-  constructor(private addEventPopupService: AddEventPopupService) {}
 
-  myCustomEvents: CustomEvent[] = [
-    {
-      id: 1,
-      title: 'Incontro Ganna',
-      start: new Date(2025, 0, 14, 15, 0, 0, 0),
-      end: new Date(2025, 0, 14, 18, 0, 0, 0),
-      description: 'bla bla',
-      location: 'Ufficio',
-      severity: Severity.HIGH,
-    },
-    {
-      id: 2,
-      title: 'Incontro Jimmy',
-      start: new Date(2025, 0, 15, 15, 0, 0, 0),
-      end: new Date(2025, 0, 15, 18, 0, 0, 0),
-      description: 'bla bla',
-      location: 'Bar Jimmy',
-      severity: Severity.MEDIUM,
-    },
+
+export class CalendarComponent {
+  customEvents: CustomEvent[] = [
+    { id: 1, title: 'Meeting Ganna', start: new Date(2025, 1, 14, 15, 0), end: new Date(2025, 1, 14, 18, 0), description: 'Discussione progetto', location: 'Ufficio', severity: Severity.HIGH },
+    { id: 2, title: 'Incontro Jimmy', start: new Date(2025, 0, 15, 15, 0), end: new Date(2025, 0, 15, 18, 0), description: 'Business talk', location: 'Café', severity: Severity.MEDIUM },
   ];
 
   calendarOptions: CalendarOptions = {
@@ -60,15 +44,20 @@ export class CalendarComponent {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
     },
     weekends: true,
-    events: EventMapper.getCalendarEvents(this.myCustomEvents),
-    eventDidMount: this.addTooltip,
+    events: EventMapper.getCalendarEvents(this.customEvents),
+    eventClick: this.openContextMenu.bind(this),
   };
+
+  selectedEvent: CustomEvent | null = null;
+  contextMenuPosition = { x: 0, y: 0 };
+
+  constructor(private addEventPopupService: AddEventPopupService) {}
 
   openAddEventPopup() {
     this.addEventPopupService.openPopup().then((newEvent) => {
       if (newEvent) {
         const eventToAdd: CustomEvent = {
-          id: this.myCustomEvents.length + 1,
+          id: this.customEvents.length + 1,
           title: newEvent.title,
           start: new Date(newEvent.start),
           end: new Date(newEvent.end),
@@ -76,46 +65,32 @@ export class CalendarComponent {
           location: newEvent.location,
           severity: newEvent.severity,
         };
-        this.myCustomEvents = [...this.myCustomEvents, eventToAdd];
+        this.customEvents = [...this.customEvents, eventToAdd];
         this.calendarOptions.events = EventMapper.getCalendarEvents(
-          this.myCustomEvents
+          this.customEvents
         );
       }
     });
   }
 
-  deleteEvent(eventId: number) {
-    this.myCustomEvents = this.myCustomEvents.filter((event) => event.id !== eventId);
-    this.calendarOptions.events = EventMapper.getCalendarEvents(this.myCustomEvents);
+  openContextMenu(info: any) {
+    this.selectedEvent = info.event;
+    this.contextMenuPosition = { x: info.jsEvent.clientX, y: info.jsEvent.clientY };
+    info.jsEvent.preventDefault(); 
   }
 
-  addTooltip(info: any) {
-    tippy(info.el, {
-      content: `
-        <div class="card">
-          <div class="card-header">
-            <strong>${info.event.title}</strong><br>
-          </div>
-          <div class="card-body">
-            <strong>Inizio:</strong> ${info.event.start?.toLocaleString() || 'N/A'}<br>
-            <strong>Fine:</strong> ${info.event.end?.toLocaleString() || 'N/A'}<br>
-            <strong>Descrizione:</strong> ${info.event.extendedProps.description || 'No description'}<br>
-            <strong>Luogo:</strong> ${info.event.extendedProps.location || 'No location specified'}<br>
-            <div class="mt-2">
-              <button id="edit-event-${info.event.extendedProps.id}" class="btn btn-sm btn-primary">Modifica</button>
-              <button id="delete-event-${info.event.extendedProps.id}" class="btn btn-sm btn-danger" (click)="deleteEvent(${info.event.extendedProps.id})">Elimina</button>
-            </div>
-          </div>
-        </div>
-      `,
-      placement: 'bottom',
-      allowHTML: true,
-      interactive: true,
-      appendTo: document.body,
-      theme: 'light-border',
-      arrow: true,
-      inertia: true,
-    });
+  deleteEvent(eventId: number) {
+    this.customEvents = this.customEvents.filter(event => event.id !== eventId);
+    this.calendarOptions.events = EventMapper.getCalendarEvents(this.customEvents);
+    this.selectedEvent = null;
   }
-  
+
+  editEvent(event: CustomEvent) {
+    console.log('Modifica evento:', event);
+    this.selectedEvent = null; 
+  }
+
+  closeContextMenu() {
+    this.selectedEvent = null;
+  }
 }
