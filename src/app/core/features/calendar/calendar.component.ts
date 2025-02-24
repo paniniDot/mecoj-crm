@@ -3,28 +3,28 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import itLocale from '@fullcalendar/core/locales/it';
 import { CalendarOptions } from '@fullcalendar/core';
 import { CustomEvent, EventMapper } from '../../models/event';
-import { AddEventPopupService } from '../../services/add-event.service';
+import { AddEventService } from '../../services/add-event.service';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listGrid from '@fullcalendar/list';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog'; 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Severity } from '../../models/event';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
-import { EventContextMenuComponent } from '../event-context-menu/event-context-menu.component'
+import { EventContextMenuComponent } from '../event-context-menu/event-context-menu.component';
+import { AddEventComponent } from '../add-event/add-event.component'; 
 
 @Component({
   standalone: true,
   imports: [FullCalendarModule, MatButtonModule, MatDialogModule, MatTooltipModule, EventContextMenuComponent],
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  providers: [AddEventPopupService],
+  providers: [AddEventService],
 })
-
 
 export class CalendarComponent {
   customEvents: CustomEvent[] = [
@@ -51,32 +51,36 @@ export class CalendarComponent {
   selectedEvent: CustomEvent | null = null;
   contextMenuPosition = { x: 0, y: 0 };
 
-  constructor(private addEventPopupService: AddEventPopupService) {}
+  constructor(
+    private addEventService: AddEventService,
+    private dialog: MatDialog  
+  ) {}
 
-  openAddEventPopup() {
-    this.addEventPopupService.openPopup().then((newEvent) => {
-      if (newEvent) {
-        const eventToAdd: CustomEvent = {
-          id: this.customEvents.length + 1,
-          title: newEvent.title,
-          start: new Date(newEvent.start),
-          end: new Date(newEvent.end),
-          description: newEvent.description,
-          location: newEvent.location,
-          severity: newEvent.severity,
-        };
-        this.customEvents = [...this.customEvents, eventToAdd];
-        this.calendarOptions.events = EventMapper.getCalendarEvents(
-          this.customEvents
-        );
-      }
+  openPopup(event?: CustomEvent): Promise<CustomEvent> {
+    return new Promise((resolve, reject) => {
+      const dialogRef = this.dialog.open(AddEventComponent, {
+        data: event || null, 
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          resolve(result); 
+        } else {
+          reject('No event data');
+        }
+      });
     });
   }
+  
 
   openContextMenu(info: any) {
     this.selectedEvent = info.event;
     this.contextMenuPosition = { x: info.jsEvent.clientX, y: info.jsEvent.clientY };
     info.jsEvent.preventDefault(); 
+  }
+
+  closeContextMenu() {
+    this.selectedEvent = null;
   }
 
   deleteEvent(eventId: number) {
@@ -87,10 +91,16 @@ export class CalendarComponent {
 
   editEvent(event: CustomEvent) {
     console.log('Modifica evento:', event);
-    this.selectedEvent = null; 
-  }
-
-  closeContextMenu() {
-    this.selectedEvent = null;
+    this.selectedEvent = event;
+  
+    this.openPopup(event).then((updatedEvent) => {
+      if (updatedEvent) {
+        const index = this.customEvents.findIndex(e => e.id === event.id);
+        if (index !== -1) {
+          this.customEvents[index] = { ...updatedEvent }; 
+          this.calendarOptions.events = EventMapper.getCalendarEvents(this.customEvents);
+        }
+      }
+    });
   }
 }

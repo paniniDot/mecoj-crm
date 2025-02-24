@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <mat-form-field appearance="fill">
     <mat-label>Titolo</mat-label>
-    <input matInput [(ngModel)]="event.title" />
+    <input matInput [placeholder]="event.title || ''" [(ngModel)]="event.title"/>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -27,9 +27,9 @@
 
   <mat-label>Urgenza</mat-label>
   <mat-radio-group [(ngModel)]="event.severity">
-    <mat-radio-button [value]="Severity.HIGH" [style.background-color]="'red'">Urgente</mat-radio-button>
-    <mat-radio-button [value]="Severity.MEDIUM" [style.background-color]="'yellow'">Medio</mat-radio-button>
-    <mat-radio-button [value]="Severity.LOW" [style.background-color]="'green'">Non urgente</mat-radio-button>
+    <mat-radio-button [value]="'HIGH'" [style.background-color]="'red'">Urgente</mat-radio-button>
+    <mat-radio-button [value]="'MEDIUM'" [style.background-color]="'yellow'">Medio</mat-radio-button>
+    <mat-radio-button [value]="'LOW'" [style.background-color]="'green'">Non urgente</mat-radio-button>
   </mat-radio-group>
 </div>
 

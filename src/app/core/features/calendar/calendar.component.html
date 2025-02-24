@@ -1,6 +1,6 @@
 <div class="h-100">
     <h1>Calendario</h1>
-    <button mat-button color="primary" (click)="openAddEventPopup()">Aggiungi Evento</button>
+    <button mat-button color="primary" (click)="openPopup()">Aggiungi Evento</button>
     <full-calendar class="h-75" [options]="calendarOptions"></full-calendar>
 
     @if (selectedEvent) {
